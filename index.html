@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTV+ | Global Live Streaming Discovery App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brandRed: '#E50914',
+                        brandBlue: '#007BFF',
+                        darkBg: '#0F172A',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(229, 9, 20, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 123, 255, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input:focus {
+            border-color: rgba(0, 123, 255, 0.5);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+        .text-glow-red {
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+        }
+        .text-glow-blue {
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col selection:bg-brandBlue selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/60 py-4 px-6 md:px-12 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- RTV+ Brand Logo -->
+            <div class="flex items-center space-x-2">
+                <div class="bg-white px-3.5 py-1.5 rounded-xl shadow-lg border border-slate-200/20 flex items-center space-x-1 font-display">
+                    <span class="text-brandRed font-black text-xl tracking-tight text-glow-red">R</span>
+                    <span class="text-slate-800 font-extrabold text-lg italic">TV</span>
+                    <span class="text-brandBlue font-black text-xl ml-0.5 text-glow-blue">+</span>
+                </div>
+                <span class="hidden sm:inline-block text-xs font-semibold bg-slate-800 text-slate-300 px-2 py-1 rounded-md border border-slate-700">Android App</span>
+            </div>
+
+            <!-- Nav Items -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#features" class="hover:text-white transition">Features</a>
+                <a href="#interactive-preview" class="hover:text-white transition">Live Preview</a>
+                <a href="#installation" class="hover:text-white transition">How to Install</a>
+                <a href="#hosting" class="hover:text-white transition">Publish Free</a>
+            </nav>
+
+            <!-- CTA Actions -->
+            <div class="flex items-center space-x-4">
+                <a href="https://t.me/rtvOfficially" target="_blank" class="text-xs sm:text-sm font-semibold hover:text-sky-400 text-sky-300 transition flex items-center gap-1">
+                    <i class="fa-brands fa-telegram text-base"></i> Telegram Support
+                </a>
+                <a href="https://ais-pre-qz3jx43cw6ao4nxxa7q2ud-19196840712.asia-southeast1.run.app" target="_blank" class="text-xs sm:text-sm font-medium hover:text-white text-slate-300 transition flex items-center gap-1">
+                    <i class="fa-solid fa-mobile-screen"></i> Online Emulator
+                </a>
+                <a href="#installation" class="bg-gradient-to-r from-brandRed to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl shadow-lg shadow-brandRed/20 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> Get APK
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Hero Container -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+        
+        <!-- Left Column: Content & Description -->
+        <div class="flex-1 space-y-8 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 bg-slate-900/80 border border-slate-800 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Version 1.0.0 Now Available for Free Download
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-none text-white">
+                Global Live Streaming, <br class="hidden sm:inline">
+                <span class="bg-gradient-to-r from-red-500 via-brandBlue to-blue-400 bg-clip-text text-transparent">Beautifully Redefined.</span>
+            </h1>
+
+            <p class="text-slate-400 text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+                Experience global HLS feeds styled with a gorgeous premium frosted glass aesthetic. Navigate, discover, and play live TV streams smoothly on any Android device.
+            </p>
+
+            <!-- Buttons Grid -->
+            <div class="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4">
+                <a href="#installation" class="w-full sm:w-auto text-center px-6 py-3.5 bg-gradient-to-r from-brandBlue to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-2xl shadow-xl shadow-brandBlue/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download text-lg"></i> Download Android APK
+                </a>
+                <a href="https://t.me/rtvOfficially" target="_blank" class="w-full sm:w-auto text-center px-6 py-3.5 bg-[#229ED9] hover:bg-[#1e8ec3] text-white font-bold rounded-2xl shadow-xl shadow-[#229ED9]/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-telegram text-lg"></i> Join Support Telegram
+                </a>
+                <a href="#interactive-preview" class="w-full sm:w-auto text-center px-6 py-3.5 bg-slate-900/60 hover:bg-slate-800/60 border border-slate-800 text-slate-200 hover:text-white font-semibold rounded-2xl transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> Live Web Demo
+                </a>
+            </div>
+
+            <!-- Stats/Highlights Grid -->
+            <div class="grid grid-cols-3 gap-4 pt-4 max-w-md mx-auto lg:mx-0 border-t border-slate-900">
+                <div>
+                    <p class="text-2xl sm:text-3xl font-display font-bold text-white">100%</p>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider">Free & Open Source</p>
+                </div>
+                <div>
+                    <p class="text-2xl sm:text-3xl font-display font-bold text-white">HLS</p>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider">Smooth Playback</p>
+                </div>
+                <div>
+                    <p class="text-2xl sm:text-3xl font-display font-bold text-white">M3</p>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider">Frosted Glass UI</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Interactive Simulated App Emulator in Web -->
+        <div class="flex-1 w-full max-w-sm sm:max-w-md mx-auto lg:max-w-none flex justify-center items-center" id="interactive-preview">
+            
+            <!-- Mobile Device Chassis Wrapper -->
+            <div class="relative w-[320px] h-[640px] bg-slate-950 rounded-[40px] p-3 shadow-2xl border-4 border-slate-800 ring-1 ring-slate-700/50 flex flex-col overflow-hidden">
+                
+                <!-- Notch/Speaker -->
+                <div class="absolute top-4 left-1/2 transform -translate-x-1/2 w-32 h-4 bg-black rounded-full z-30 flex items-center justify-center">
+                    <div class="w-12 h-1 bg-slate-800 rounded-full"></div>
+                </div>
+
+                <!-- Web Simulator Application Screen -->
+                <div class="flex-1 rounded-[32px] overflow-hidden flex flex-col relative bg-[#090C15] select-none" id="simulator-screen">
+                    
+                    <!-- Simulated HLS Video Player Frame -->
+                    <div class="h-[210px] w-full bg-black relative flex flex-col justify-end" id="player-view">
+                        <!-- Simulated video stream element (interactive mockup) -->
+                        <div class="absolute inset-0 z-0">
+                            <!-- Animated canvas background representing live video stream -->
+                            <div class="w-full h-full opacity-85 transition-all duration-500 relative overflow-hidden" id="video-stream-bg">
+                                <video id="stream-video" class="w-full h-full object-cover" autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1574375927938-d5a98e8edd85?w=500&auto=format&fit=crop&q=60">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-32115-large.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+                        </div>
+
+                        <!-- Brand Watermark inside Player -->
+                        <div class="absolute top-6 left-3 z-10 flex items-center space-x-1 scale-75 transform origin-top-left">
+                            <div class="bg-white/95 px-2 py-0.5 rounded-lg flex items-center space-x-0.5">
+                                <span class="text-brandRed font-black text-xs">R</span>
+                                <span class="text-slate-800 font-extrabold text-[10px] italic">TV</span>
+                                <span class="text-brandBlue font-black text-xs">+</span>
+                            </div>
+                        </div>
+
+                        <!-- Video Player Control Overlay -->
+                        <div class="z-10 p-3 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <button class="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white text-xs backdrop-blur-md" onclick="togglePlayState()">
+                                    <i class="fa-solid fa-pause" id="play-pause-icon"></i>
+                                </button>
+                                <div>
+                                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span> LIVE FEED
+                                    </p>
+                                    <p class="text-xs font-bold text-white truncate w-32" id="current-channel-title">NASA Live TV</p>
+                                </div>
+                            </div>
+                            <!-- Quality & Mute -->
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-[9px] bg-brandBlue/20 text-brandBlue px-1.5 py-0.5 rounded font-extrabold border border-brandBlue/30">HLS</span>
+                                <button class="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white text-xs backdrop-blur-md" onclick="toggleMuteState()">
+                                    <i class="fa-solid fa-volume-xmark" id="mute-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- App UI Content Frame (Glassmorphism layout matching the real Android App) -->
+                    <div class="flex-1 p-3.5 flex flex-col justify-between overflow-y-auto z-10 bg-slate-950/40">
+                        
+                        <div>
+                            <!-- Search & Filter bar -->
+                            <div class="relative mb-3">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
+                                <input type="text" placeholder="Search HLS channels..." class="w-full glass-input text-[11px] py-2 pl-8 pr-3 rounded-xl text-white placeholder:text-slate-600 focus:outline-none" oninput="searchChannels(this.value)">
+                            </div>
+
+                            <!-- Animated Category Tabs -->
+                            <div class="flex space-x-1.5 overflow-x-auto pb-2 scrollbar-none text-[10px] font-bold" id="category-tabs">
+                                <button class="px-3 py-1.5 rounded-lg bg-brandBlue text-white shadow-md shadow-brandBlue/10 shrink-0 transition" onclick="selectCategory('all', this)">All Feeds</button>
+                                <button class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white shrink-0 transition" onclick="selectCategory('news', this)">News</button>
+                                <button class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white shrink-0 transition" onclick="selectCategory('sports', this)">Sports</button>
+                                <button class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white shrink-0 transition" onclick="selectCategory('music', this)">Music</button>
+                                <button class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white shrink-0 transition" onclick="selectCategory('scifi', this)">Sci-Fi</button>
+                            </div>
+
+                            <!-- Channel list view styled with Glassmorphism Cards -->
+                            <div class="space-y-2 mt-2" id="channel-list">
+                                <!-- Generated via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Bottom Frosted Navigation bar matching Jetpack Compose style -->
+                        <div class="glass-panel border border-slate-800/80 rounded-2xl p-1.5 flex items-center justify-around text-slate-400 text-[10px] font-semibold mt-4">
+                            <button class="flex flex-col items-center space-y-0.5 text-brandBlue" onclick="alert('You are already viewing the Live Stream Dashboard!')">
+                                <i class="fa-solid fa-tv text-sm"></i>
+                                <span>Discover</span>
+                            </button>
+                            <button class="flex flex-col items-center space-y-0.5 hover:text-slate-200" onclick="alert('Settings Panel loaded: Change themes, buffer configuration, or configure HLS options inside the Android App!')">
+                                <i class="fa-solid fa-sliders text-sm"></i>
+                                <span>Settings</span>
+                            </button>
+                            <button class="flex flex-col items-center space-y-0.5 hover:text-slate-200" onclick="window.open('https://github.com')">
+                                <i class="fa-brands fa-github text-sm"></i>
+                                <span>Source</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- App Features Section -->
+    <section class="py-20 bg-[#070A12] border-t border-slate-900" id="features">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center space-y-4 max-w-xl mx-auto mb-16">
+                <h2 class="text-3xl font-display font-bold text-white">App Capabilities & Architecture</h2>
+                <p class="text-slate-400 text-sm">Beautiful Android client with professional design-focused styling built strictly with Material Design 3 and ExoPlayer integration.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-3xl space-y-4 hover:border-slate-800/80 transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-brandRed/10 border border-brandRed/20 flex items-center justify-center text-brandRed group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-tv text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-white">Real Live HLS Streaming</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Features real-time M3U8 and HLS live streams curated across global networks. Includes immediate buffering indicator and low-latency playback configuration.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-3xl space-y-4 hover:border-slate-800/80 transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-brandBlue/10 border border-brandBlue/20 flex items-center justify-center text-brandBlue group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-white">Frosted Glass Theme</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Beautiful glassmorphic design that incorporates shadows, gradients, and custom transparent blur backgrounds to elevate visual identity.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-3xl space-y-4 hover:border-slate-800/80 transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-layer-group text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-white">Category Smart Filtering</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Instantly filter dynamic channels by News, Sports, Music, and Space-Science categories. Type titles to search through available live feeds instantaneously.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 rounded-3xl space-y-4 hover:border-slate-800/80 transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-music text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-white">ExoPlayer Background Stream</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Utilizes custom Native ExoPlayer integration to keep the stream playing seamlessly with low-latency media buffer configurations.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card p-8 rounded-3xl space-y-4 hover:border-slate-800/80 transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-sliders text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-white">Interactive Settings Panel</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Customize video aspect ratios, streaming buffers, default content loading filters, or easily check software updates inside a unified configuration page.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card p-8 rounded-3xl space-y-4 hover:border-slate-800/80 transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-mobile text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-white">Optimized Native Package</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Extremely small footprint, compiled directly using optimal Proguard tree-shaking rules, yielding super fast startup times and robust performance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="py-20 bg-[#0B0F19] border-t border-slate-900" id="installation">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-3xl font-display font-bold text-white">Install on Your Android Device</h2>
+                <p class="text-slate-400 text-sm">Download the compiled Android APK to install RTV+ on any phone, tablet, or TV.</p>
+            </div>
+
+            <!-- Steps layout -->
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-start">
+                    <div class="bg-brandBlue text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shrink-0">1</div>
+                    <div class="space-y-2 flex-grow">
+                        <h3 class="text-lg font-semibold text-white">Get the APK</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Click below to download the latest compiled Android debug APK file. If you are inside the AI Studio Web editor, click the <b>Settings icon</b> in the top-right to download the built APK directly to your machine.
+                        </p>
+                        <div class="pt-2">
+                            <a href="./app-debug.apk" download class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 text-white font-bold text-xs px-4 py-2 rounded-xl transition">
+                                <i class="fa-solid fa-file-arrow-down"></i> Local app-debug.apk
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-start">
+                    <div class="bg-brandBlue text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shrink-0">2</div>
+                    <div class="space-y-2 flex-grow">
+                        <h3 class="text-lg font-semibold text-white">Enable Unknown Sources</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Android devices protect against untrusted apps. To install the APK, navigate to <b>Settings > Security > Install unknown apps</b> and grant permissions to your browser or file manager.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-start">
+                    <div class="bg-brandBlue text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shrink-0">3</div>
+                    <div class="space-y-2 flex-grow">
+                        <h3 class="text-lg font-semibold text-white">Launch & Watch</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Tap the downloaded APK in your device notifications or Downloads folder to run the Android Package installer. Tap "Install anyway" if Play Protect warns about an unsigned debug package. Once complete, launch the RTV+ App from your launcher!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hosting Info Section -->
+    <section class="py-20 bg-[#070A12] border-t border-slate-900" id="hosting">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="glass-panel border-brandBlue/20 p-8 md:p-12 rounded-3xl space-y-6 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brandBlue/10 text-brandBlue mb-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-display font-extrabold text-white">How to Publish This Showcase for Free</h2>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto leading-relaxed">
+                    Make this gorgeous responsive landing page live on the public internet so everyone can see your work and download the compiled Android APK directly!
+                </p>
+
+                <!-- Step-by-step instructions grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left pt-6 border-t border-slate-800">
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-brands fa-github text-slate-300 text-lg"></i>
+                            <h3 class="text-base font-bold text-white">1. GitHub Pages (Highly Recommended)</h3>
+                        </div>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Push this codebase to a free public repository. Navigate to <b>Repository Settings > Pages</b>, select the <b>main</b> branch, and click Save. GitHub will instantly publish this <code>index.html</code> page to a free public <code>.github.io</code> domain.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-bolt text-amber-400 text-lg"></i>
+                            <h3 class="text-base font-bold text-white">2. Netlify / Vercel (Instant Drag-and-Drop)</h3>
+                        </div>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Open <a href="https://netlify.com" target="_blank" class="text-brandBlue hover:underline">netlify.com</a> or <a href="https://vercel.com" target="_blank" class="text-brandBlue hover:underline">vercel.com</a>. Drag-and-drop the directory containing this <code>index.html</code> file directly into the browser. It will go live instantly with a free customizable domain name.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#05070D] border-t border-slate-900 py-12 px-6 md:px-12 text-center text-slate-500 text-xs space-y-4">
+        <p>© 2026 RTV+. Designed with Jetpack Compose Material 3 and modern CSS web paradigms.</p>
+        <p>Built using Google AI Studio. Powered by Gemini.</p>
+    </footer>
+
+    <!-- Web Simulator Controller JS -->
+    <script>
+        const channels = [
+            {
+                id: 1,
+                title: "NASA Live TV",
+                category: "news",
+                desc: "Official space exploration broadcasts and live space station views.",
+                videoSrc: "https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-32115-large.mp4",
+                poster: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=500"
+            },
+            {
+                id: 2,
+                title: "Red Bull Extreme Sports",
+                category: "sports",
+                desc: "High octane extreme sports, downhill biking, and skydiving feeds.",
+                videoSrc: "https://assets.mixkit.co/videos/preview/mixkit-skater-doing-tricks-in-a-skatepark-34351-large.mp4",
+                poster: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500"
+            },
+            {
+                id: 3,
+                title: "Electronic Lofi Lounge",
+                category: "music",
+                desc: "Chilled beats, lofi dynamic loops, and live visualizers.",
+                videoSrc: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-and-lights-31907-large.mp4",
+                poster: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500"
+            },
+            {
+                id: 4,
+                title: "Sky News Global",
+                category: "news",
+                desc: "Breaking local, international, and regional reports.",
+                videoSrc: "https://assets.mixkit.co/videos/preview/mixkit-busy-street-of-a-metropolis-at-night-41584-large.mp4",
+                poster: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500"
+            },
+            {
+                id: 5,
+                title: "Global Tech Future",
+                category: "scifi",
+                desc: "Futuristic technology previews, AI news, and sci-fi loops.",
+                videoSrc: "https://assets.mixkit.co/videos/preview/mixkit-holographic-lines-spinning-on-black-background-40033-large.mp4",
+                poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500"
+            }
+        ];
+
+        let activeCategory = "all";
+        let searchQuery = "";
+        let isMuted = true;
+        let isPlaying = true;
+
+        const streamVideo = document.getElementById("stream-video");
+        const playPauseIcon = document.getElementById("play-pause-icon");
+        const muteIcon = document.getElementById("mute-icon");
+        const currentChannelTitle = document.getElementById("current-channel-title");
+
+        function renderChannels() {
+            const listEl = document.getElementById("channel-list");
+            listEl.innerHTML = "";
+
+            const filtered = channels.filter(c => {
+                const matchCategory = activeCategory === "all" || c.category === activeCategory;
+                const matchSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 text-slate-600 text-[11px]">
+                        <i class="fa-solid fa-triangle-exclamation text-lg mb-2 block"></i>
+                        No live channels match your search.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const isActive = currentChannelTitle.textContent === c.title;
+                const activeClasses = isActive 
+                    ? 'border-brandBlue/40 bg-brandBlue/10 shadow-md shadow-brandBlue/5' 
+                    : 'border-slate-900 bg-slate-950/80 hover:border-slate-800/60';
+
+                const cardHtml = `
+                    <div class="glass-card p-2.5 rounded-xl border ${activeClasses} flex items-center justify-between transition cursor-pointer" onclick="selectChannel('${c.title}')">
+                        <div class="flex items-center space-x-2 w-3/4">
+                            <img src="${c.poster}" class="w-8 h-8 rounded-lg object-cover border border-slate-800 shrink-0">
+                            <div class="truncate">
+                                <h4 class="text-[11px] font-bold text-white truncate">${c.title}</h4>
+                                <p class="text-[9px] text-slate-500 truncate">${c.desc}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1.5 shrink-0">
+                            ${isActive ? '<span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span></span>' : ''}
+                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-700"></i>
+                        </div>
+                    </div>
+                `;
+                listEl.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function selectChannel(title) {
+            const channel = channels.find(c => c.title === title);
+            if (!channel) return;
+
+            currentChannelTitle.textContent = channel.title;
+            
+            // Fade out then change stream and play
+            streamVideo.style.opacity = "0.3";
+            setTimeout(() => {
+                streamVideo.src = channel.videoSrc;
+                streamVideo.poster = channel.poster;
+                streamVideo.play().then(() => {
+                    isPlaying = true;
+                    playPauseIcon.className = "fa-solid fa-pause";
+                }).catch(e => console.log(e));
+                streamVideo.style.opacity = "1";
+            }, 300);
+
+            // Re-render list to update active border style
+            setTimeout(renderChannels, 350);
+        }
+
+        function selectCategory(cat, btn) {
+            activeCategory = cat;
+            
+            // Update active category tab color classes
+            const tabs = document.getElementById("category-tabs").children;
+            for (let t of tabs) {
+                t.className = "px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white shrink-0 transition";
+            }
+            btn.className = "px-3 py-1.5 rounded-lg bg-brandBlue text-white shadow-md shadow-brandBlue/10 shrink-0 transition";
+
+            renderChannels();
+        }
+
+        function searchChannels(val) {
+            searchQuery = val;
+            renderChannels();
+        }
+
+        function togglePlayState() {
+            if (isPlaying) {
+                streamVideo.pause();
+                isPlaying = false;
+                playPauseIcon.className = "fa-solid fa-play";
+            } else {
+                streamVideo.play().catch(e => console.log(e));
+                isPlaying = true;
+                playPauseIcon.className = "fa-solid fa-pause";
+            }
+        }
+
+        function toggleMuteState() {
+            if (isMuted) {
+                streamVideo.muted = false;
+                isMuted = false;
+                muteIcon.className = "fa-solid fa-volume-high text-brandBlue";
+            } else {
+                streamVideo.muted = true;
+                isMuted = true;
+                muteIcon.className = "fa-solid fa-volume-xmark";
+            }
+        }
+
+        // Initialize lists
+        window.addEventListener('DOMContentLoaded', () => {
+            renderChannels();
+            // Default mute video sound representation to comply with browser autoplay guidelines
+            streamVideo.muted = true;
+            streamVideo.play().catch(e => console.log(e));
+        });
+    </script>
+</body>
+</html>
