@@ -1,0 +1,6 @@
+{
+  "name": "Rtvplus",
+  "description": "A global live streaming discovery app using real HLS feeds, categories, and custom frosted glass visual aesthetics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
